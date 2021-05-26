@@ -55,6 +55,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 break;
         }
 
+
 //        try {
 //            execute(new SendMessage(chatId, answer));
 //            execute(new SendMessage(chatId, "О каком городе мне рассказать?"));
