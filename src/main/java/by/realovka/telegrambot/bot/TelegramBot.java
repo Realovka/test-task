@@ -55,11 +55,13 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         } else {
             city = cityService.findByName(text);
-            try {
-                execute(new SendMessage(chatId, city.getDescription()));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+           answer = city.getDescription();
+        }
+
+        try {
+            execute(new SendMessage(chatId, answer));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 }
