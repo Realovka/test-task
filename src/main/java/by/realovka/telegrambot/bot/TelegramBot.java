@@ -77,8 +77,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         String text = update.getMessage().getText();
         String chatId = update.getMessage().getChatId().toString();
         String answer;
-            City city = cityService.findByName(text);
-            answer = city.getDescription();
+//            City city = cityService.findByName(text);
+//            answer = city.getDescription();
                 switch (text){
             case "/start": answer = "Привет. Я туристический бот!";
                 break;
