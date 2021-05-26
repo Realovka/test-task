@@ -3,6 +3,7 @@ package by.realovka.telegrambot.bot;
 import by.realovka.telegrambot.entity.City;
 import by.realovka.telegrambot.service.CityService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @PropertySource("classpath:application.properties")
 public class TelegramBot extends TelegramLongPollingBot {
 
@@ -22,7 +23,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String botToken;
 
-    private CityService cityService;
+    private final CityService cityService;
 
     @Override
     public String getBotUsername() {
