@@ -85,5 +85,11 @@ public class TelegramBot extends TelegramLongPollingBot {
             case "/help": answer = "Для получения информации вы должны написать название города";
                 break;
         }
+        try {
+//            execute(new SendMessage(chatId, answer));
+            execute(new SendMessage(chatId, "О каком городе мне рассказать?"));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
