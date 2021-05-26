@@ -1,0 +1,25 @@
+###
+POST http://localhost:8080/city/save
+Content-Type: application/json
+
+{
+  "name": "Москва",
+  "description": "Не забудьте посетить Красную площадь. Ну а в ЦУМ можно не заходить)))"
+}
+
+### comment
+GET http://localhost:8080/city/desc/Москва
+
+###
+
+POST http://localhost:8080/city/1
+Content-Type: application/json
+
+{
+  "name": "Москва",
+  "description": "Не забудьте посетить Красную площадь."
+}
+
+###
+
+GET http://localhost:8080/city/delete/Москва
