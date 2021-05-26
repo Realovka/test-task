@@ -35,40 +35,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         return botToken;
     }
 
-//    @Override
-//    public void onRegister() {
-//    }
-
-//    @Override
-//    public void onUpdateReceived(Update update) {
-//        if (!update.getMessage().hasText() || !update.hasMessage())
-//            return;
-//        String text = update.getMessage().getText();
-//        String chatId = update.getMessage().getChatId().toString();
-//        String answer;
-////        try {
-////            City city = city.showCityByName(text);
-////            answer = city.getDescription();
-////        } catch (CityNotFoundException ex) {
-////            answer = ex.getMessage();
-////        }
-//
-//        switch (text){
-//            case "/start": answer = "Привет. Я туристический бот!";
-//                break;
-//            case "/help": answer = "Для получения информации вы должны написать название города";
-//                break;
-//        }
-//
-//
-////        try {
-////            execute(new SendMessage(chatId, answer));
-////            execute(new SendMessage(chatId, "О каком городе мне рассказать?"));
-////        } catch (TelegramApiException e) {
-////            e.printStackTrace();
-////        }
-//    }
-
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -76,20 +42,24 @@ public class TelegramBot extends TelegramLongPollingBot {
             return;
         String text = update.getMessage().getText();
         String chatId = update.getMessage().getChatId().toString();
-        String answer;
-//            City city = cityService.findByName(text);
-//            answer = city.getDescription();
-                switch (text){
-            case "/start": answer = "Привет. Я туристический бот!";
-                break;
-            case "/help": answer = "Для получения информации вы должны написать название города";
-                break;
-        }
-        try {
-//            execute(new SendMessage(chatId, answer));
-            execute(new SendMessage(chatId, "О каком городе мне рассказать?"));
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        String answer = null;
+        City city;
+        if(text.startsWith("/")) {
+            switch (text) {
+                case "/start":
+                    answer = "Привет! Я туристический бот. Введите город для получения информации";
+                    break;
+                case "/help":
+                    answer = "Ввведите город с большой буквы";
+                    break;
+            }
+        } else {
+            city = cityService.findByName(text);
+            try {
+                execute(new SendMessage(chatId, city.getDescription()));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
