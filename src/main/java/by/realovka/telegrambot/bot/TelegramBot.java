@@ -43,7 +43,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         String chatId = update.getMessage().getChatId().toString();
         String answer = null;
         City city;
-        if(text.startsWith("/")) {
+        if (text.startsWith("/")) {
             switch (text) {
                 case "/start":
                     answer = "Привет! Я туристический бот. Введите город для получения информации";
@@ -51,10 +51,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/help":
                     answer = "Ввведите город с большой буквы";
                     break;
+                default:
+                    city = cityService.findByName(text);
+                    answer = city.getDescription();
+                    break;
             }
-        } else {
-            city = cityService.findByName(text);
-           answer = city.getDescription();
         }
 
         try {
