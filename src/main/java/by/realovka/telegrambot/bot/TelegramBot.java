@@ -51,11 +51,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case "/help":
                     answer = "Ввведите город с большой буквы";
                     break;
-                default:
-                    city = cityService.findByName(text);
-                    answer = city.getDescription();
-                    break;
             }
+        } else {
+            city = cityService.findByName(text);
+            answer = city.getDescription();
         }
 
         try {
