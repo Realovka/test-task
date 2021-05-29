@@ -18,7 +18,7 @@ public class CityServiceImpl implements CityService{
             cityRepository.save(city);
             return true;
         } else {
-            throw new CityAlreadyExistException("Such a city is already exists in your guide");
+            throw new CityAlreadyExistException();
         }
     }
 
@@ -37,8 +37,8 @@ public class CityServiceImpl implements CityService{
         return cityRepository.save(cityFromDB);
     }
 
-    public void deleteCity(String name) {
-        City city = cityRepository.findByName(name).orElseThrow(NoSuchCityException::new);
-        cityRepository.delete(city);
+    public void deleteCity(Long id) {
+        City cityFromDB = cityRepository.getById(id);
+        cityRepository.delete(cityFromDB);
     }
 }

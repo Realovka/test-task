@@ -2,7 +2,6 @@ package by.realovka.telegrambot.bot;
 
 import by.realovka.telegrambot.entity.City;
 import by.realovka.telegrambot.service.CityService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

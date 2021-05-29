@@ -8,5 +8,5 @@ public interface CityService {
     City getDescription(String name);
     City findByName(String name);
     City update(Long id, City city);
-    void deleteCity(String name);
+    void deleteCity(Long id);
 }

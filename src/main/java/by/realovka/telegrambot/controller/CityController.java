@@ -2,15 +2,23 @@ package by.realovka.telegrambot.controller;
 
 import by.realovka.telegrambot.entity.City;
 import by.realovka.telegrambot.service.CityService;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 
 @RestController
 @RequestMapping(path = "/city")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CityController {
 
-    private CityService cityService;
+    private final CityService cityService;
 
     @PostMapping(path = "/save")
     public City saveNewCity(@RequestBody City city) {
@@ -23,14 +31,14 @@ public class CityController {
         return cityService.getDescription(name).getDescription();
     }
 
-    @PostMapping(path = "/update/{id}")
+    @PutMapping(path = "/update/{id}")
     public City updateCity(@PathVariable Long id, @RequestBody City city) {
         return cityService.update(id, city);
     }
 
-    @GetMapping(path = "/delete/{name}")
-    public void deleteCity(@PathVariable String name) {
-        cityService.deleteCity(name);
+    @DeleteMapping(path = "/delete/{id}")
+    public void deleteCity(@PathVariable Long id) {
+        cityService.deleteCity(id);
     }
 
 }

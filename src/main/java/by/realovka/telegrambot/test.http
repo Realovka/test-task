@@ -1,4 +1,4 @@
-###
+### save new city
 POST http://localhost:8080/city/save
 Content-Type: application/json
 
@@ -7,12 +7,11 @@ Content-Type: application/json
   "description": "Не забудьте посетить Красную площадь. Ну а в ЦУМ можно не заходить)))"
 }
 
-### comment
+### get city
 GET http://localhost:8080/city/desc/Москва
 
-###
-
-POST http://localhost:8080/city/1
+### update city
+PUT http://localhost:8080/city/update/1
 Content-Type: application/json
 
 {
@@ -20,6 +19,5 @@ Content-Type: application/json
   "description": "Не забудьте посетить Красную площадь."
 }
 
-###
-
-GET http://localhost:8080/city/delete/Москва
+### delete city
+DELETE http://localhost:8080/city/delete/1
