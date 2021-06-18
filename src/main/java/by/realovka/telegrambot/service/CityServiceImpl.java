@@ -7,6 +7,8 @@ import by.realovka.telegrambot.service.exception.NoSuchCityException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 
+import java.util.Optional;
+
 @Controller
 @AllArgsConstructor
 public class CityServiceImpl implements CityService{
@@ -31,14 +33,13 @@ public class CityServiceImpl implements CityService{
     }
 
     public City update(Long id, City city) {
-        City cityFromDB = cityRepository.getById(id);
+        City cityFromDB = cityRepository.getCityById(id).orElseThrow(NoSuchCityException::new);
         cityFromDB.setName(city.getName());
         cityFromDB.setDescription(city.getDescription());
         return cityRepository.save(cityFromDB);
     }
 
     public void deleteCity(Long id) {
-        City cityFromDB = cityRepository.getById(id);
-        cityRepository.delete(cityFromDB);
+        cityRepository.deleteCityById(id);
     }
 }

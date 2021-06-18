@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 
 @RestController
-@RequestMapping(path = "city")
+@RequestMapping(path = "/city")
 @RequiredArgsConstructor
 public class CityController {
 
@@ -26,17 +26,17 @@ public class CityController {
         return city;
     }
 
-    @GetMapping(path = "{name}")
+    @GetMapping(path = "/{name}")
     public String getDescription(@PathVariable String name) {
         return cityService.getDescription(name).getDescription();
     }
 
-    @PutMapping(path = "{id}")
+    @PutMapping(path = "/{id}")
     public City updateCity(@PathVariable Long id, @RequestBody City city) {
         return cityService.update(id, city);
     }
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "/{id}")
     public void deleteCity(@PathVariable Long id) {
         cityService.deleteCity(id);
     }

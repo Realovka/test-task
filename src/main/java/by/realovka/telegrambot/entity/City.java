@@ -19,4 +19,9 @@ public class City {
     private Long id;
     private String name;
     private String description;
+
+    public City(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

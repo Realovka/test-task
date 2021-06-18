@@ -3,7 +3,9 @@ package by.realovka.telegrambot.service;
 import by.realovka.telegrambot.entity.City;
 import by.realovka.telegrambot.repository.CityRepository;
 import by.realovka.telegrambot.service.exception.CityAlreadyExistException;
+import by.realovka.telegrambot.service.exception.NoSuchCityException;
 import org.assertj.core.api.Assert;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,6 +60,7 @@ class CityServiceImplTest {
         verify(cityRepository, times(1)).save(any());
     }
 
+
     @Test
     public void getDescriptionTest() {
         when(cityRepository.findByName("Moscow")).thenReturn(Optional.ofNullable(city1));
@@ -65,15 +68,25 @@ class CityServiceImplTest {
         assertEquals("Visit Red square", city.getDescription());
     }
 
+
     @Test
     public void findByNameTest() {
+        when(cityRepository.findByName("Moscow")).thenReturn(Optional.ofNullable(city1));
+        City city = cityService.findByName("Moscow");
+        assertEquals("Moscow", city.getName());
+
     }
 
-    @Test
-    public void updateTest() {
-    }
-
-    @Test
-    public void deleteCityTest() {
-    }
+//    @Test
+//    public void updateTest() {
+//        when(cityRepository.getCityById(1L)).thenReturn(Optional.ofNullable(city1));
+//        when(cityRepository.getCityById(1L)).thenThrow(NoSuchCityException.class);
+//        when(cityRepository.save(new City(1L, "Gomel", "Visit the river Sozh")));
+//        City city = cityService.update(1L, new City(1L, "Gomel", "Visit the river Sozh"));
+//        assertEquals("Gomel", city.getName());
+//    }
+//
+//    @Test
+//    public void deleteCityTest() {
+//    }
 }
