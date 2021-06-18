@@ -1,5 +1,5 @@
 ### save new city
-POST http://localhost:8080/city/save
+POST http://localhost:8080/city
 Content-Type: application/json
 
 {
@@ -8,10 +8,10 @@ Content-Type: application/json
 }
 
 ### get city
-GET http://localhost:8080/city/desc/Москва
+GET http://localhost:8080/city/Москва
 
 ### update city
-PUT http://localhost:8080/city/update/1
+PUT http://localhost:8080/city/1
 Content-Type: application/json
 
 {
@@ -20,4 +20,4 @@ Content-Type: application/json
 }
 
 ### delete city
-DELETE http://localhost:8080/city/delete/1
+DELETE http://localhost:8080/city/1
