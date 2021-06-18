@@ -3,6 +3,9 @@ package by.realovka.telegrambot.controller;
 import by.realovka.telegrambot.entity.City;
 import by.realovka.telegrambot.service.CityService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,23 +20,30 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 @RequestMapping(path = "/city")
 @RequiredArgsConstructor
 public class CityController {
+    private static final Logger logger = LogManager.getLogger();
 
     private final CityService cityService;
 
     @PostMapping
     public City saveNewCity(@RequestBody City city) {
         cityService.saveNewCity(city);
+        logger.log(Level.INFO, "Save new city " + city);
         return city;
     }
 
     @GetMapping(path = "/{name}")
     public String getDescription(@PathVariable String name) {
-        return cityService.getDescription(name).getDescription();
+        String description = cityService.getDescription(name).getDescription();
+        logger.log(Level.INFO, "City description " + description);
+        return description;
     }
 
     @PutMapping(path = "/{id}")
     public City updateCity(@PathVariable Long id, @RequestBody City city) {
-        return cityService.update(id, city);
+        City cityUpdate = cityService.update(id, city);
+        logger.log(Level.INFO, "Update city " + cityUpdate);
+        return cityUpdate;
+
     }
 
     @DeleteMapping(path = "/{id}")
