@@ -30,21 +30,21 @@ public class CityServiceImpl implements CityService {
 
     public City getDescription(String name) {
         return cityRepository.findByName(name).orElseThrow(() -> {
-            logger.log(Level.ERROR, "No such city");
+            logger.log(Level.ERROR, "No such city to get description");
             throw new NoSuchCityException();
         });
     }
 
     public City findByName(String name) {
         return cityRepository.findByName(name).orElseThrow(() -> {
-            logger.log(Level.ERROR, "No such city");
+            logger.log(Level.ERROR, "No such city by name");
             throw new NoSuchCityException();
         });
     }
 
     public City update(Long id, City city) {
         City cityFromDB = cityRepository.getCityById(id).orElseThrow(() -> {
-            logger.log(Level.ERROR, "No such city");
+            logger.log(Level.ERROR, "No such city for updating");
             throw new NoSuchCityException();
         });
         cityFromDB.setName(city.getName());
@@ -53,7 +53,11 @@ public class CityServiceImpl implements CityService {
     }
 
     public void deleteCity(Long id) {
-        logger.log(Level.INFO, "Delete city with id " + id);
-        cityRepository.delete(cityRepository.getById(id));
+        if (cityRepository.existsById(id)) {
+            cityRepository.delete(cityRepository.getById(id));
+        } else {
+            logger.log(Level.ERROR, "No such city for deleting");
+            throw new NoSuchCityException();
+        }
     }
 }

@@ -3,6 +3,7 @@ package by.realovka.telegrambot.service;
 import by.realovka.telegrambot.entity.City;
 import by.realovka.telegrambot.repository.CityRepository;
 import by.realovka.telegrambot.service.exception.CityAlreadyExistException;
+import by.realovka.telegrambot.service.exception.NoSuchCityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,6 +73,14 @@ class CityServiceImplTest {
                 .isInstanceOf(CityAlreadyExistException.class);
     }
 
+    @Test
+    public void saveNewCityExceptionCountingNumberCallsMethod() {
+        given(cityRepository.findByName(city2.getName())).willReturn(Optional.ofNullable(city2));
+        assertThatThrownBy(()-> cityService.saveNewCity(city2))
+                .isInstanceOf(CityAlreadyExistException.class);
+        verify(cityRepository, never()).save(city2);
+    }
+
 
     @Test
     public void getDescriptionTest() {
@@ -80,6 +89,13 @@ class CityServiceImplTest {
         assertEquals("Visit Red square", city.getDescription());
     }
 
+//    @Test
+//    public void getDescriptionException() {
+//        given(cityRepository.findByName("Minsk")).willReturn(Optional.ofNullable(city2));
+//        assertThatThrownBy(()-> cityService.findByName("Gomel"))
+//                .isInstanceOf(NoSuchCityException.class);
+//    }
+
 
     @Test
     public void findByNameTest() {
@@ -87,6 +103,7 @@ class CityServiceImplTest {
         City city = cityService.findByName("Moscow");
         assertEquals("Moscow", city.getName());
     }
+
 
 //    @Test
 //    public void updateTest() {
