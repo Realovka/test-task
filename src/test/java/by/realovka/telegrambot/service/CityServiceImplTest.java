@@ -2,9 +2,11 @@ package by.realovka.telegrambot.service;
 
 import by.realovka.telegrambot.entity.City;
 import by.realovka.telegrambot.repository.CityRepository;
+import by.realovka.telegrambot.service.exception.CityAlreadyExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,7 +47,15 @@ class CityServiceImplTest {
         when(cityRepository.save(any())).thenReturn(city1);
         boolean result = cityService.saveNewCity(new City(1L, "Moscow", "Visit Red square"));
         assertTrue(result);
+    }
 
+    @Test
+    public void saveNewCityArgumentCaptorHelped() {
+        cityService.saveNewCity(city2);
+        ArgumentCaptor<City> cityArgumentCaptor = ArgumentCaptor.forClass(City.class);
+        verify(cityRepository).save(cityArgumentCaptor.capture());
+        City capturedCity = cityArgumentCaptor.getValue();
+        assertEquals(city2, capturedCity);
     }
 
     @Test
@@ -52,6 +63,13 @@ class CityServiceImplTest {
         when(cityRepository.save(any())).thenReturn(city1);
         cityService.saveNewCity(new City(1L, "Moscow", "Visit Red square"));
         verify(cityRepository, times(1)).save(any());
+    }
+
+    @Test
+    public void saveNewCityException() {
+        given(cityRepository.findByName(city2.getName())).willReturn(Optional.ofNullable(city2));
+        assertThatThrownBy(()-> cityService.saveNewCity(city2))
+                .isInstanceOf(CityAlreadyExistException.class);
     }
 
 
@@ -68,7 +86,6 @@ class CityServiceImplTest {
         when(cityRepository.findByName("Moscow")).thenReturn(Optional.ofNullable(city1));
         City city = cityService.findByName("Moscow");
         assertEquals("Moscow", city.getName());
-
     }
 
 //    @Test
