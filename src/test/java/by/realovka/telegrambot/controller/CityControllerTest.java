@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,13 +69,20 @@ class CityControllerTest {
                 .andExpect(jsonPath("$", equalTo("Visit Red square")));
     }
 
-    @Test
-    void updateCity() {
-    }
+//    @Test
+//    void updateCity() throws Exception {
+//        when(cityService.update(anyLong(),any())).thenReturn(city);
+//        mockMvc.perform(put("/city/1")
+//                .contentType("application/json")
+//                .content(objectMapper.writeValueAsString(1L)))
+//                .andExpect(status().isOk())
+//    }
 
     @Test
-    void deleteCity() throws Exception{
-
-
+    void deleteCity() throws Exception {
+        mockMvc.perform(delete("/city/1")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(1)))
+                .andExpect(status().isOk());
     }
 }
