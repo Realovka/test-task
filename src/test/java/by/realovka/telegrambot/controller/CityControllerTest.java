@@ -50,7 +50,7 @@ class CityControllerTest {
     }
 
     @Test
-    void saveNewCity() throws Exception{
+    void saveNewCityTest() throws Exception{
         when(cityService.saveNewCity(any())).thenReturn(city);
         mockMvc.perform(post("/city")
                 .contentType("application/json")
@@ -60,7 +60,7 @@ class CityControllerTest {
     }
 
     @Test
-    void getDescription() throws Exception {
+    void getDescriptionTest() throws Exception {
         when(cityService.getDescription(anyString())).thenReturn(city);
         mockMvc.perform(get("/city/Moscow")
                 .contentType("application/json")
@@ -69,17 +69,18 @@ class CityControllerTest {
                 .andExpect(jsonPath("$", equalTo("Visit Red square")));
     }
 
-//    @Test
-//    void updateCity() throws Exception {
+    @Test
+    void updateCityTest() throws Exception {
 //        when(cityService.update(anyLong(),any())).thenReturn(city);
-//        mockMvc.perform(put("/city/1")
-//                .contentType("application/json")
-//                .content(objectMapper.writeValueAsString(1L)))
-//                .andExpect(status().isOk())
-//    }
+        mockMvc.perform(put("/city/1")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(1)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", equalTo(city)));
+    }
 
     @Test
-    void deleteCity() throws Exception {
+    void deleteCityTest() throws Exception {
         mockMvc.perform(delete("/city/1")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(1)))

@@ -16,7 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -44,12 +45,12 @@ class CityServiceImplTest {
     }
 
 
-//    @Test
-//    public void saveNewCityTestTrue() {
-//        when(cityRepository.save(any())).thenReturn(city1);
-//        boolean result = cityService.saveNewCity(new City(1L, "Moscow", "Visit Red square"));
-//        assertTrue(result);
-//    }
+    @Test
+    public void saveNewCityTestTrue() {
+        when(cityRepository.save(any())).thenReturn(city1);
+        City city = cityService.saveNewCity(new City(1L, "Moscow", "Visit Red square"));
+        assertEquals(city1, city);
+    }
 
     @Test
     public void saveNewCityArgumentCaptorHelped() {
@@ -92,9 +93,13 @@ class CityServiceImplTest {
 
     @Test
     public void getDescriptionException() {
-        given(cityRepository.findByName(city2.getName())).willReturn(Optional.ofNullable(city2));
-        assertThatThrownBy(() -> cityService.findByName("Gomel"))
-                .isInstanceOf(NoSuchCityException.class);
+        try {
+            CityService cityService = mock(CityService.class);
+            when(cityService.getDescription(anyString())).thenThrow(NoSuchCityException.class);
+            cityService.getDescription("Moscow");
+        } catch (NoSuchCityException e){
+            assertTrue(e instanceof NoSuchCityException);
+        }
     }
 
     @Test
@@ -105,12 +110,13 @@ class CityServiceImplTest {
     }
 
 
-//    @Test
-//    public void updateTest() {
-//        when(cityRepository.save(any())).thenReturn();
-//        cityService.update(city2.getId(), city2);
-//        assertEquals("New", city2.getDescription());
-//    }
+    @Test
+    public void updateTest() {
+        City city = new City();
+        city.setName("Gomel");
+        given(cityRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
+        cityService.update(city1.getId(), city);
+    }
 
 
     @Test
