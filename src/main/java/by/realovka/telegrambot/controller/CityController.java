@@ -43,7 +43,6 @@ public class CityController {
         City cityUpdate = cityService.update(id, city);
         logger.log(Level.INFO, "Update city " + cityUpdate);
         return cityUpdate;
-
     }
 
     @DeleteMapping(path = "/{id}")

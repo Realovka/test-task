@@ -14,11 +14,20 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.eq;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,16 +56,19 @@ class CityControllerTest {
 
     @AfterEach
     void tearDown() {
+        city = null;
+        mockMvc = null;
     }
 
     @Test
-    void saveNewCityTest() throws Exception{
+    void saveNewCityTest() throws Exception {
         when(cityService.saveNewCity(any())).thenReturn(city);
         mockMvc.perform(post("/city")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(city)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo("Moscow")));
+                .andExpect(jsonPath("$.name", equalTo("Moscow")))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
@@ -66,17 +78,20 @@ class CityControllerTest {
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString("Moscow")))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", equalTo("Visit Red square")));
+                .andExpect(jsonPath("$", equalTo("Visit Red square")))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     void updateCityTest() throws Exception {
-//        when(cityService.update(anyLong(),any())).thenReturn(city);
+        when(cityService.update(anyLong(), eq(city))).thenReturn(city);
         mockMvc.perform(put("/city/1")
                 .contentType("application/json")
-                .content(objectMapper.writeValueAsString(1)))
+                .content(objectMapper.writeValueAsString(city)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", equalTo(city)));
+                .andExpect(jsonPath("$.name", equalTo(city.getName())))
+                .andDo(MockMvcResultHandlers.print());
+
     }
 
     @Test
@@ -84,6 +99,7 @@ class CityControllerTest {
         mockMvc.perform(delete("/city/1")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(1)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
     }
 }
