@@ -17,11 +17,11 @@ public class CityServiceImpl implements CityService {
 
     private CityRepository cityRepository;
 
-    public boolean saveNewCity(City city) {
+    public City saveNewCity(City city) {
         if (cityRepository.findByName(city.getName()).isEmpty()) {
             logger.log(Level.INFO, "Save city " + city);
             cityRepository.save(city);
-            return true;
+            return city;
         } else {
             logger.log(Level.ERROR, "Such city already exists");
             throw new CityAlreadyExistException();
