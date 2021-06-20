@@ -20,7 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class CityServiceImplTest {
@@ -40,6 +46,7 @@ class CityServiceImplTest {
 
     @AfterEach
     public void tearDown() {
+        cityRepository.deleteAll();
         city1 = null;
         city2 = null;
     }
@@ -97,7 +104,7 @@ class CityServiceImplTest {
             CityService cityService = mock(CityService.class);
             when(cityService.getDescription(anyString())).thenThrow(NoSuchCityException.class);
             cityService.getDescription("Moscow");
-        } catch (NoSuchCityException e){
+        } catch (NoSuchCityException e) {
             assertTrue(e instanceof NoSuchCityException);
         }
     }
@@ -112,10 +119,9 @@ class CityServiceImplTest {
 
     @Test
     public void updateTest() {
-        City city = new City();
-        city.setName("Gomel");
-        given(cityRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
-        cityService.update(city1.getId(), city);
+        doReturn(Optional.of(city1)).when(cityRepository).getCityById(1L);
+        cityService.update(city1.getId(), city2);
+        verify(cityRepository, times(1)).save(city1);
     }
 
 
@@ -140,6 +146,4 @@ class CityServiceImplTest {
                 .isInstanceOf(NoSuchCityException.class);
         verify(cityRepository, never()).delete(city2);
     }
-
-
 }
